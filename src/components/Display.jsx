@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DisplayHome from "./DisplayHome";
 import DisplayAlbum from "./DisplayAlbum";
 import { useRef } from "react";
@@ -10,9 +10,15 @@ const Display = () => {
   const location = useLocation();
   const isAlbum = location.pathname.includes("album");
   const albumId = isAlbum ? location.pathname.slice(-1) : "";
-  const bgColor = albumsData[Number(albumId).bgColor];
-  console.log(bgColor);
+  const bgColor = albumsData[Number(albumId)].bgColor;
 
+  useEffect(() => {
+    if (albumId) {
+      displyRef.current.style.background = `linear-gradient(${bgColor},#121212)`;
+    } else {
+      displyRef.current.style.background = `#121212`;
+    }
+  });
   return (
     <div
       ref={displyRef}
