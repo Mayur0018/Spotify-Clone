@@ -4,7 +4,7 @@ import Display from "./components/Display";
 import { PlayerContext } from "./context/PlayerContext";
 import { useContext } from "react";
 function App() {
-  const {audioRef} = useContext(PlayerContext);
+  const { audioRef } = useContext(PlayerContext);
   return (
     <>
       <div className=" h-screen bg-black">
@@ -12,7 +12,7 @@ function App() {
           <Sidebar />
           <Display />
         </div>
-        <Player />  
+        <Player />
         <audio ref={audioRef} preload="auto"></audio>
       </div>
     </>
