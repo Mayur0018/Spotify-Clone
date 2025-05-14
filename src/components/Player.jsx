@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
+import { PlayerContext } from "../context/PlayerContext";
 import { assets, songsData } from "../assets/assets";
 const Player = () => {
+  const {seekbar,seekbg} = useContext(PlayerContext);
   return (
     <div className="h-[10%] bg-black flex justify-between items-center text-white px-4">
       <div className=" hidden lg:flex items-center gap-4">
@@ -25,10 +27,11 @@ const Player = () => {
         <div className=" flex items-center gap-5">
           <p>1:06</p>
           <div
+          ref={seekbg}
             className="w-[60vw] max-w-[500px] bg-gray-300 rounded-full cursor-pointer
          "
           >
-            <hr className="h-1 border-none w-20 bg-green-800 rounded-full" />
+            <hr ref={seekbar} className="h-1 border-none w-20 bg-green-800 rounded-full" />
           </div>
           <p>3:20</p>
         </div>
