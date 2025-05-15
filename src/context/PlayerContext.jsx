@@ -48,26 +48,42 @@ const PlayerContextProvider = (props) => {
       setPlaystatus(true);
     }
   };
+
+  const seekSong = (e) => {
+    audioRef.current.currentTime =
+      (e.nativeEvent.offsetX / seekbg.current.offsetWidth) *
+      audioRef.current.duration;
+  };
   useEffect(() => {
-    setTimeout(() => {
+    const interval = setTimeout(() => {
       audioRef.current.ontimeupdate = () => {
-        seekbar.current.style.width =
-          Math.floor(
-            (audioRef.current.currentTime / audioRef.current.duration) * 100
-          ) + "%";
-        setTime({
-          currentTime: {
-            second: Math.floor(audioRef.current.currentTime % 60),
-            minutes: Math.floor(audioRef.current.currentTime / 60),
-          },
-          totalTime: {
-            second: Math.floor(audioRef.current.duration % 60),
-            minutes: Math.floor(audioRef.current.duration / 60),
-          },
-        });
+        if (audioRef.current && audioRef.current.duration) {
+          seekbar.current.style.width =
+            Math.floor(
+              (audioRef.current.currentTime / audioRef.current.duration) * 100
+            ) + "%";
+          setTime({
+            currentTime: {
+              second: Math.floor(audioRef.current.currentTime % 60),
+              minutes: Math.floor(audioRef.current.currentTime / 60),
+            },
+            totalTime: {
+              second: Math.floor(audioRef.current.duration % 60),
+              minutes: Math.floor(audioRef.current.duration / 60),
+            },
+          });
+        }
       };
     }, 1000);
+  
+    return () => {
+      clearTimeout(interval);
+      if (audioRef.current) {
+        audioRef.current.ontimeupdate = null;
+      }
+    };
   }, [audioRef]);
+  
   const contextValue = {
     audioRef,
     seekbar,
@@ -83,6 +99,7 @@ const PlayerContextProvider = (props) => {
     playWithId,
     previous,
     next,
+    seekSong,
   };
   return (
     <PlayerContext.Provider value={contextValue}>
